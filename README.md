@@ -9,6 +9,7 @@ A cyberpunk theme for tmux with built-in [Claude Code](https://docs.anthropic.co
 - **Directory tabs** — windows auto-name themselves after the pane's current directory
 - **Claude status badges** — each tab shows its Claude Code session state (working / needs you / done / idle), with an unattended-wait timer
 - **Claude usage meter** — status-right shows your rate-limit windows (`5h`, `week`, optional per-model), color-ramped by pressure
+- **Centered confirms** — `prefix+x` / `prefix+&` ask via a floating menu at screen center (`y`/`n` still work), and all tmux menus get the theme's rounded ultraviolet styling
 
 ```
  ⌁ session   1 ▸ ✻ api   2 ▸ web        ✻ 5h 37% ▸ week 82% ▸ 23:18 ▸ 06-Aug  host
