@@ -46,6 +46,30 @@ set -g @gful_claude_icon ""
 
 This merges six hook entries into `~/.claude/settings.json` (idempotent; existing hooks are preserved; all entries are `async` so they add no latency). Restart Claude Code sessions to activate. Badges update within `status-interval` (5s). If several Claude sessions share one window, the most recent event wins.
 
+## Claude Code usage in the status bar
+
+The right side of the status bar can show your Claude rate-limit windows, color-ramped by pressure (cyan → yellow ≥50% → pink ≥80%):
+
+```
+✻ 5h 37% ▸ week 82% ▸ 23:18 ▸ 06-Aug  host
+```
+
+Claude Code only exposes these numbers (Pro/Max accounts) through the statusLine payload, so the theme uses a sink: add one line to your statusline script (the command configured as `statusLine` in `~/.claude/settings.json`), right after it reads stdin into `$input`:
+
+```sh
+echo "$input" | ~/.tmux/plugins/gful-tmux-theme/scripts/claude-usage-sink.sh 2>/dev/null &
+```
+
+Every running Claude session then keeps `~/.cache/gful-tmux/usage.json` fresh, and `scripts/claude-usage.sh` renders it. No credentials are read and no API is polled. The segment hides itself when the cache is missing or older than an hour (e.g. machines without Claude Code).
+
+**Optional model-scoped segment.** The renderer also appends a fourth window if `~/.cache/gful-tmux/model.json` exists and is fresh (<1h):
+
+```json
+{"label":"fable","pct":41.7}
+```
+
+The theme doesn't populate this file — model-scoped limits (e.g. the weekly Fable window) aren't in the statusLine payload, only in the OAuth usage endpoint that `/usage` reads. If you already have a script fetching that (a statusline widget, a cron job), have it tee the used-percentage into this file and the bar picks it up with the same color ramp.
+
 ## Requirements
 
 - tmux ≥ 3.2 (truecolor styles); developed on 3.7
