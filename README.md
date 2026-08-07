@@ -33,7 +33,7 @@ caution-yellow messages.
 ### TPM
 
 ```tmux
-set -g @plugin 'gielfull/tmux-gful'
+set -g @plugin 'gielfull/gful-tmux-theme'
 ```
 
 Then `prefix + I`.
